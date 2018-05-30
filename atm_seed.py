@@ -19,5 +19,5 @@ CREATE TABLE transactions (
 
 db.query(create_query)
 
-insert_query = "INSERT INTO transactions (amount, type) VALUES (0, "None");"
+insert_query = "INSERT INTO transactions (amount, type) VALUES (0, 'None');"
 db.query(insert_query)
