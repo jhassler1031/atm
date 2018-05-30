@@ -9,13 +9,19 @@ db = records.Database("postgres://localhost/atm_db")
 # Interaction functions ==============================
 
 def deposit(db, amount):
-    pass
+    sql = "INSERT INTO transactions (amount, type) VALUES (:amount, :type);"
+    db.query(sql, amount=amount, type="Deposit")
 
 def withdrawel(db, amount):
-    pass
+    sql = sql = "INSERT INTO transactions (amount, type) VALUES (:amount, :type);"
+    db.query(sql, amount=amount, type="Withdrawel")
 
 def show_all(db):
-    pass
+    sql = "SELECT * FROM transactions;"
+    return db.query(sql)
+
+def display_transaction(db, action):
+    print(f"Transaction ID: {action.id} Amount: ${action.amount} Type: {action.type}")
 
 
 # UI functions ========================================
@@ -33,29 +39,36 @@ def ui_deposit(db, balance):
     print("How much would you like to deposit?")
     amount = input("> ")
     amount = int(amount)
+    deposit(db, amount)
+    balance += amount
     print(f"You have deposited ${amount} into your account.")
-    #interact with DB
+    return balance
 
 def ui_withdrawel(db, balance):
     while True:
-        print("How much would you like to withdrawl? ")
+        print("How much would you like to withdraw? ")
         amount = input("> ")
         amount = int(amount)
 
         if amount < balance:
+            withdrawel(db, amount)
+            balance -= amount
             print(f"You have withdrawn ${amount}.")
-            #interact with db
             break
         else:
             print("Insufficient Funds")
-
+    return balance
 
 def get_balance(db, balance):
     print(f"Your Balance is: {balance}")
+    return balance
 
 def ui_show_transactions(db, balance):
     print("Showing All Transactions")
-    #interact with DB
+    transactions = show_all(db)
+    for action in transactions:
+        display_transaction(db, action)
+    return balance 
 
 def ui_exit(db, balance):
     print("Goodbye")
@@ -78,4 +91,4 @@ print("----------ATM----------")
 while True:
     my_choice = menu()
 
-    menu_options[my_choice](db, balance)
+    balance = menu_options[my_choice](db, balance)
