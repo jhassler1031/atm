@@ -13,11 +13,11 @@ create_query = """
 CREATE TABLE transactions (
     id SERIAL PRIMARY KEY,
     amount NUMERIC (5),
-    type NUMERIC (1)
+    type VARCHAR (20)
 );
 """
 
 db.query(create_query)
 
-insert_query = "INSERT INTO transactions (amount, type) VALUES (0, 0);"
+insert_query = "INSERT INTO transactions (amount, type) VALUES (0, "None");"
 db.query(insert_query)
